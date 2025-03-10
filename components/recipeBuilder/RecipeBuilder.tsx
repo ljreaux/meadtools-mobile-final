@@ -7,6 +7,8 @@ import Units from "./Units";
 import { useRecipe } from "../providers/RecipeProvider";
 import DesiredBatchDetails from "./DesiredBatchDetails";
 import Ingredients from "./Ingredients";
+import Results from "./Results";
+import ScaleRecipeForm from "./ScaleRecipeForm";
 
 const RecipeBuilder = () => {
   const { t } = useTranslation();
@@ -21,6 +23,8 @@ const RecipeBuilder = () => {
           <Units useRecipe={useRecipe} />
           <DesiredBatchDetails />
           <Ingredients useRecipe={useRecipe} />
+          <Results useRecipe={useRecipe} />
+          <ScaleRecipeForm useRecipe={useRecipe} />
         </ScrollView>
       </View>
     </RecipeProvider>

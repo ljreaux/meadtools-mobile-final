@@ -19,7 +19,7 @@ const InputWithUnits = ({
   return (
     <View className={cn("relative", className)}>
       <Input
-        editable={disabled}
+        editable={!disabled}
         value={value}
         readOnly={disabled}
         onChangeText={handleChange}

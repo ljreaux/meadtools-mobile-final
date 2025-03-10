@@ -24,7 +24,6 @@ function Ingredients({ useRecipe }: { useRecipe: () => Recipe }) {
     ingredientList,
     units,
     fillToNearest,
-    setIngredients,
   } = useRecipe();
 
   if (loadingIngredients) {
@@ -42,7 +41,7 @@ function Ingredients({ useRecipe }: { useRecipe: () => Recipe }) {
                 <View
                   className={`${
                     i !== ingredients.length - 1
-                      ? "border-b border-dotted "
+                      ? "border-b border-dotted border-muted-foreground"
                       : ""
                   }`}
                   key={i}
@@ -117,53 +116,54 @@ const IngredientLine = ({
   };
 
   return (
-    <View
-      className={`joyride-ingredient-${index + 1} grid grid-cols-2 gap-2 py-6`}
-    >
-      <View>
-        <Text> {t("ingredient")}</Text>
-        <SearchableInput
-          items={ingredientList}
-          query={ing.name}
-          setQuery={(value) => changeIng(value)}
-          keyName="name"
-          onSelect={handleIngredientSelect}
-        />
+    <View className="my-4">
+      <View className="flex flex-row w-full gap-2 my-2">
+        <View className="flex-1">
+          <Text> {t("ingredient")}</Text>
+          <SearchableInput
+            items={ingredientList}
+            query={ing.name}
+            setQuery={(value) => changeIng(value)}
+            keyName="name"
+            onSelect={handleIngredientSelect}
+          />
+        </View>
+        {/* Other fields */}
+        <View className="flex-1">
+          <Text>{t("BRIX")}</Text>
+          <Input
+            value={ing.brix}
+            inputMode="decimal"
+            onChangeText={updateBrix}
+          />
+        </View>
       </View>
-      {/* Other fields */}
-      <View>
-        <Text>{t("BRIX")}</Text>
-        <Input value={ing.brix} inputMode="decimal" onChangeText={updateBrix} />
+      <View className="flex flex-row w-full gap-2 my-2">
+        <View className="flex-1">
+          <Text>{t("recipeBuilder.labels.weight")}</Text>
+          <InputWithUnits
+            value={ing.details[0]}
+            handleChange={updateWeight}
+            text={units.weight}
+          />
+        </View>
+        <View className="flex-1">
+          <Text>{t("recipeBuilder.labels.volume")}</Text>
+          <InputWithUnits
+            value={ing.details[1]}
+            handleChange={updateVolume}
+            text={units.volume}
+          />
+        </View>
       </View>
-      <View>
-        <Text>{t("recipeBuilder.labels.weight")}</Text>
-        <InputWithUnits
-          value={ing.details[0]}
-          handleChange={updateWeight}
-          text={units.weight}
-        />
-      </View>
-      <View>
-        <Text>{t("recipeBuilder.labels.volume")}</Text>
-        <InputWithUnits
-          value={ing.details[1]}
-          handleChange={updateVolume}
-          text={units.volume}
-        />
-      </View>
-      <View
-        className={`joyride-secondary-${index + 1} flex gap-1 flex-col sm:flex-row items-center justify-center`}
-      >
+      <View className="flex flex-row items-center gap-2 my-4">
         <Text>{t("recipeBuilder.labels.secondary")}</Text>
         <Switch checked={ing.secondary} onCheckedChange={toggleChecked} />
       </View>
       <Button onPress={deleteFn} variant="destructive">
         <Text>{t("desktop.delete")}</Text>
       </Button>
-      <Button
-        onPress={fillToNearest}
-        className={`joyride-fillToNext-${index + 1} col-span-2`}
-      >
+      <Button onPress={fillToNearest} className="my-2">
         <Text>{t("toNextVolume", { volumeUnit: units.volume })}</Text>
       </Button>
     </View>

@@ -24,6 +24,7 @@ import { ChevronDown } from "~/lib/icons/ChevronDown";
 import { ChevronUp } from "~/lib/icons/ChevronUp";
 import { Input } from "../ui/input";
 import SectionCard from "./SectionCard";
+import Tooltip from "../Tooltips";
 
 const DesiredBatchDetails = () => {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ const DesiredBatchDetails = () => {
         <CollapsibleTrigger>
           <View className="flex flex-row items-center gap-2">
             <Text>{t("initialDetails.title")}</Text>
+            <Tooltip body={t("tipText.desiredDetailsForm")} />
             {open ? (
               <ChevronUp size={14} className="text-foreground" />
             ) : (
