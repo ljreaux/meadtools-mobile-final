@@ -61,15 +61,15 @@ export type NutrientType = {
   inputs: {
     volume: {
       value: string;
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+      onChangeText: (val: string) => void;
     };
     sg: {
       value: string;
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+      onChangeText: (val: string) => void;
     };
     offset: {
       value: string;
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+      onChangeText: (val: string) => void;
     };
     numberOfAdditions: {
       value: string;
@@ -90,9 +90,9 @@ export type NutrientType = {
     selectedNutrients: string[];
     yeastNitrogenRequirement: NitrogenRequirement;
   };
-  setVolume: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setSG: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setOffset: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setVolume: (val: string) => void;
+  setSG: (val: string) => void;
+  setOffset: (val: string) => void;
   setNumberOfAdditions: (e: string) => void;
   setYeastBrand: (brand: YeastBrand) => void;
   setYeastName: (name: string) => void;
@@ -102,7 +102,7 @@ export type NutrientType = {
   maxGpl: string[];
   targetYAN: number;
   yeastAmount: string;
-  changeYeastAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  changeYeastAmount: (val: string) => void;
   goFermType: {
     value: GoFermType;
     onChange: (val: GoFermType) => void;

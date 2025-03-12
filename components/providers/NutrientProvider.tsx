@@ -113,8 +113,7 @@ export const NutrientProvider = ({
   };
 
   // Setters for handling input change
-  const setVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const setVolume = (value: string) => {
     if (isValidNumber(value)) {
       setFullData((prev) => ({
         ...prev,
@@ -123,8 +122,7 @@ export const NutrientProvider = ({
     }
   };
 
-  const setSG = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const setSG = (value: string) => {
     if (isValidNumber(value)) {
       setFullData((prev) => ({
         ...prev,
@@ -133,8 +131,7 @@ export const NutrientProvider = ({
     }
   };
 
-  const setOffset = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const setOffset = (value: string) => {
     if (isValidNumber(value)) {
       setFullData((prev) => ({
         ...prev,
@@ -153,8 +150,7 @@ export const NutrientProvider = ({
     }
   };
 
-  const changeYeastAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const changeYeastAmount = (value: string) => {
     if (isValidNumber(value)) {
       setYeastAmount(value);
       const amount = parseNumber(value);
@@ -240,7 +236,7 @@ export const NutrientProvider = ({
       ...prev,
       selected: {
         ...prev.selected,
-        volumeUnits: unit, // Update the volumeUnits field when changed
+        volumeUnits: unit,
       },
     }));
   };
@@ -618,9 +614,9 @@ export const NutrientProvider = ({
   // Expose only the necessary state to the UI
   const uiState = {
     inputs: {
-      volume: { value: fullData.inputs.volume, onChange: setVolume },
-      sg: { value: fullData.inputs.sg, onChange: setSG },
-      offset: { value: fullData.inputs.offset, onChange: setOffset },
+      volume: { value: fullData.inputs.volume, onChangeText: setVolume },
+      sg: { value: fullData.inputs.sg, onChangeText: setSG },
+      offset: { value: fullData.inputs.offset, onChangeText: setOffset },
       numberOfAdditions: {
         value: fullData.inputs.numberOfAdditions,
         onValueChange: setNumberOfAdditions,

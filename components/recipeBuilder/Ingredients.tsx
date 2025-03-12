@@ -41,7 +41,7 @@ function Ingredients({ useRecipe }: { useRecipe: () => Recipe }) {
                 <View
                   className={`${
                     i !== ingredients.length - 1
-                      ? "border-b border-dotted border-muted-foreground"
+                      ? "border-b border-muted-foreground"
                       : ""
                   }`}
                   key={i}
