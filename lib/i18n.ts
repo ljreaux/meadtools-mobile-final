@@ -1,41 +1,49 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import Backend from "i18next-http-backend";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18nConfig from "../i18nConfig";
 
-const API_KEY = process.env.I18NEXUS_API_KEY;
+// Import local translation files
+import enDefault from "../public/locales/en/default.json";
+import enYeastTable from "../public/locales/en/YeastTable.json";
+import deDefault from "../public/locales/de/default.json";
+import deYeastTable from "../public/locales/de/YeastTable.json";
 
-i18n
-  .use(Backend)
-  .use(initReactI18next)
-  .init({
-    lng: i18nConfig.defaultLocale, // Default language
-    fallbackLng: i18nConfig.defaultLocale,
-    supportedLngs: i18nConfig.locales, // Supported languages
-    defaultNS: i18nConfig.defaultNS,
-    ns: i18nConfig.ns, // Namespace
+// Manually define translation resources
+const resources = {
+  en: {
+    default: enDefault,
+    YeastTable: enYeastTable,
+  },
+  de: {
+    default: deDefault,
+    YeastTable: deYeastTable,
+  },
+};
 
-    backend: {
-      loadPath: `https://api.i18nexus.com/project_resources/translations/{{lng}}/{{ns}}.json?api_key=${API_KEY}`,
-    },
+i18n.use(initReactI18next).init({
+  lng: i18nConfig.defaultLocale,
+  fallbackLng: i18nConfig.defaultLocale,
+  supportedLngs: i18nConfig.locales,
+  defaultNS: i18nConfig.defaultNS,
+  ns: i18nConfig.ns,
+  resources,
 
-    interpolation: {
-      escapeValue: false, // React Native does not require escaping
-    },
+  interpolation: {
+    escapeValue: false,
+  },
 
-    react: {
-      useSuspense: false, // Prevents issues with async rendering
-    },
+  react: {
+    useSuspense: false,
+  },
 
-    detection: {
-      order: ["asyncStorage", "navigator"],
-      caches: ["asyncStorage"],
-      lookupAsyncStorage: "i18nextLng",
-    },
-  });
+  detection: {
+    order: ["asyncStorage", "navigator"],
+    caches: ["asyncStorage"],
+    lookupAsyncStorage: "i18nextLng",
+  },
+});
 
-// Persist the selected language
 i18n.on("languageChanged", (lng) => {
   AsyncStorage.setItem("i18nextLng", lng);
 });
