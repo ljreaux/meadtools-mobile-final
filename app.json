@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "meadtools-mobile",
-    "slug": "meadtools-mobile",
+    "slug": "meadtools",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ljreaux.meadtools"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2702b18d-a345-4bb1-979b-ae6284363f59"
+      }
+    },
+    "owner": "ljreaux"
   }
 }
