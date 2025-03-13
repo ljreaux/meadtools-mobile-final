@@ -118,11 +118,11 @@ export type NutrientType = {
   setNitrogenRequirement: (value: NitrogenRequirement) => void;
   otherYanContribution: {
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeText: (val: string) => void;
   };
   otherNutrientName: {
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeText: (val: string) => void;
   };
   yanContributions: string[];
   editYanContribution: (index: number, value: string) => void;

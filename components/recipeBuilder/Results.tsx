@@ -76,27 +76,25 @@ function Results({ useRecipe }: { useRecipe: () => Recipe }) {
         </View>
       </View>
 
-      <View className="flex flex-row gap-2 my-2">
-        <View>
-          <View className="flex flex-row items-center gap-2">
-            <Text>{t("recipeBuilder.resultsLabels.totalPrimary")}</Text>
-            <Tooltip body={t("tipText.totalVolume")} />
-          </View>
-          <InputWithUnits disabled value={volume} text={units.volume} />
+      <View className="my-2">
+        <View className="flex flex-row items-center gap-2">
+          <Text>{t("recipeBuilder.resultsLabels.totalPrimary")}</Text>
+          <Tooltip body={t("tipText.totalVolume")} />
         </View>
-        <View>
-          <View className="flex flex-row items-center gap-2">
-            <Text>{t("recipeBuilder.resultsLabels.totalSecondary")}</Text>
-            <Tooltip body={t("tipText.totalSecondary")} />
-          </View>
-          <InputWithUnits
-            disabled
-            value={totalVolume.toLocaleString(currentLocale, {
-              maximumFractionDigits: 3,
-            })}
-            text={units.volume}
-          />
+        <InputWithUnits disabled value={volume} text={units.volume} />
+      </View>
+      <View className="my-2">
+        <View className="flex flex-row items-center gap-2">
+          <Text>{t("recipeBuilder.resultsLabels.totalSecondary")}</Text>
+          <Tooltip body={t("tipText.totalSecondary")} />
         </View>
+        <InputWithUnits
+          disabled
+          value={totalVolume.toLocaleString(currentLocale, {
+            maximumFractionDigits: 3,
+          })}
+          text={units.volume}
+        />
       </View>
 
       <View className="flex flex-row gap-2 my-2">

@@ -139,8 +139,7 @@ export const NutrientProvider = ({
       }));
     }
   };
-  const setOtherYanContribution = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const setOtherYanContribution = (value: string) => {
     if (isValidNumber(value)) {
       setYanContributions((prev) => {
         const newArr = [...prev];
@@ -241,8 +240,8 @@ export const NutrientProvider = ({
     }));
   };
 
-  const changeNutrientName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOtherNutrientName(e.target.value);
+  const changeNutrientName = (value: string) => {
+    setOtherNutrientName(value);
   };
 
   const setSelectedNutrients = (nutrients: string[]) => {
@@ -655,11 +654,11 @@ export const NutrientProvider = ({
     setNitrogenRequirement,
     otherYanContribution: {
       value: yanContributions[3],
-      onChange: setOtherYanContribution,
+      onChangeText: setOtherYanContribution,
     },
     otherNutrientName: {
       value: otherNutrientName,
-      onChange: changeNutrientName,
+      onChangeText: changeNutrientName,
     },
     editMaxGpl,
     editYanContribution,
