@@ -8,6 +8,7 @@ import Builder from "./Builder";
 import { Button } from "../ui/button";
 import lodash from "lodash";
 import Nutrients from "./Nutrients";
+import Stabilizers from "./Stabilizers";
 
 const RecipeBuilder = () => {
   const { t } = useTranslation();
@@ -73,6 +74,11 @@ const RecipeBuilder = () => {
             <Nutrients disabled>
               <NavButtons {...navButtonProps} />
             </Nutrients>
+          </TabsContent>
+          <TabsContent value="stabilizers">
+            <Stabilizers>
+              <NavButtons {...navButtonProps} />
+            </Stabilizers>
           </TabsContent>
           <TabsContent value="save">
             <NavButtons {...navButtonProps} />
