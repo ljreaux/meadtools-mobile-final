@@ -1,13 +1,15 @@
 import { Ingredient, IngredientDetails, Recipe } from "~/types/recipeDataTypes";
 import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
-import { Button } from "../ui/button";
+import { Button, buttonTextVariants } from "../ui/button";
 import SearchableInput from "../ui/SearchableInput";
 import { useTranslation } from "react-i18next";
 import InputWithUnits from "../InputWithUnits";
 import { Text } from "../ui/text";
 import { View } from "react-native";
 import SectionCard from "./SectionCard";
+import { ChevronUp } from "~/lib/icons/ChevronUp";
+import { ChevronDown } from "~/lib/icons/ChevronDown";
 
 function Ingredients({ useRecipe }: { useRecipe: () => Recipe }) {
   const { t } = useTranslation();
@@ -24,7 +26,26 @@ function Ingredients({ useRecipe }: { useRecipe: () => Recipe }) {
     ingredientList,
     units,
     fillToNearest,
+    setIngredients,
   } = useRecipe();
+
+  const moveUp = (index: number) => {
+    if (index > 0) {
+      const temp = ingredients[index];
+      ingredients[index] = ingredients[index - 1];
+      ingredients[index - 1] = temp;
+      setIngredients([...ingredients]);
+    }
+  };
+
+  const moveDown = (index: number) => {
+    if (index < ingredients.length - 1) {
+      const temp = ingredients[index];
+      ingredients[index] = ingredients[index + 1];
+      ingredients[index + 1] = temp;
+      setIngredients([...ingredients]);
+    }
+  };
 
   if (loadingIngredients) {
     return <Text>Loading</Text>;
@@ -66,7 +87,36 @@ function Ingredients({ useRecipe }: { useRecipe: () => Recipe }) {
                     }}
                     fillToNearest={() => fillToNearest(ing.id)}
                     index={i}
-                  />
+                  >
+                    <View className="flex-row w-full gap-2 my-2">
+                      {i !== 0 && (
+                        <Button
+                          onPress={() => moveUp(i)}
+                          className="flex-1"
+                          variant="secondary"
+                        >
+                          <ChevronUp
+                            className={buttonTextVariants({
+                              variant: "secondary",
+                            })}
+                          />
+                        </Button>
+                      )}
+                      {i !== ingredients.length - 1 && (
+                        <Button
+                          onPress={() => moveDown(i)}
+                          className="flex-1"
+                          variant="secondary"
+                        >
+                          <ChevronDown
+                            className={buttonTextVariants({
+                              variant: "secondary",
+                            })}
+                          />
+                        </Button>
+                      )}
+                    </View>
+                  </IngredientLine>
                 </View>
               );
             })}
@@ -95,7 +145,7 @@ const IngredientLine = ({
   updateBrix,
   toggleChecked,
   fillToNearest,
-  index,
+  children,
 }: {
   ing: IngredientDetails;
   deleteFn: () => void;
@@ -108,6 +158,7 @@ const IngredientLine = ({
   units: { weight: string; volume: string };
   fillToNearest: () => void;
   index: number;
+  children?: React.ReactNode;
 }) => {
   const { t } = useTranslation();
 
@@ -116,8 +167,8 @@ const IngredientLine = ({
   };
 
   return (
-    <View className="my-4">
-      <View className="flex flex-row w-full gap-2 my-2">
+    <View className="">
+      <View className="flex flex-row w-full gap-2">
         <View className="flex-1">
           <Text> {t("ingredient")}</Text>
           <SearchableInput
@@ -160,6 +211,7 @@ const IngredientLine = ({
         <Text>{t("recipeBuilder.labels.secondary")}</Text>
         <Switch checked={ing.secondary} onCheckedChange={toggleChecked} />
       </View>
+      {children}
       <Button onPress={deleteFn} variant="destructive">
         <Text>{t("desktop.delete")}</Text>
       </Button>

@@ -9,9 +9,11 @@ import { Button } from "../ui/button";
 import lodash from "lodash";
 import Nutrients from "./Nutrients";
 import Stabilizers from "./Stabilizers";
+import Additives from "./Additives";
+import Notes from "./Notes";
+import GoogleAuthTest from "./GoogleAuthTest";
 
 const RecipeBuilder = () => {
-  const { t } = useTranslation();
   const [tab, setTab] = useState("ingredients");
 
   const tabKeys = [
@@ -80,7 +82,18 @@ const RecipeBuilder = () => {
               <NavButtons {...navButtonProps} />
             </Stabilizers>
           </TabsContent>
+          <TabsContent value="additives">
+            <Additives>
+              <NavButtons {...navButtonProps} />
+            </Additives>
+          </TabsContent>
+          <TabsContent value="notes">
+            <Notes>
+              <NavButtons {...navButtonProps} />
+            </Notes>
+          </TabsContent>
           <TabsContent value="save">
+            <GoogleAuthTest></GoogleAuthTest>
             <NavButtons {...navButtonProps} />
           </TabsContent>
         </Tabs>

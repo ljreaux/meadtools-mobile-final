@@ -28,6 +28,7 @@ import lodash from "lodash";
 import { useTranslation } from "react-i18next";
 import { NutrientProvider } from "./NutrientProvider";
 import { Option } from "../ui/select";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RecipeContext = createContext<Recipe | undefined>(undefined);
 
@@ -490,68 +491,70 @@ export default function RecipeProvider({
     setSecondaryNotes((prev) => prev.filter((note) => note.id !== id));
   };
 
-  // const retrieveStoredData = () => {
-  //   // get recipe Data
-  //   const storedData = localStorage.getItem("recipeData") || "false";
-  //   const parsed = JSON.parse(storedData) as RecipeData | false;
+  const retrieveStoredData = async () => {
+    // get recipe Data
+    const storedData = (await AsyncStorage.getItem("recipeData")) ?? "false";
+    const parsed = JSON.parse(storedData) as RecipeData | false;
 
-  //   if (parsed) {
-  //     const parsedWithAdditiveIds = {
-  //       ...parsed,
-  //       additives: parsed.additives.map((add) => ({
-  //         ...add,
-  //         id: genRandomId(),
-  //       })),
-  //     };
-  //     setRecipeData(parsedWithAdditiveIds);
-  //   }
+    if (parsed) {
+      const parsedWithAdditiveIds = {
+        ...parsed,
+        additives: parsed.additives.map((add) => ({
+          ...add,
+          id: genRandomId(),
+        })),
+      };
+      setRecipeData(parsedWithAdditiveIds);
+    }
 
-  //   // get notes data
-  //   const primaryNotes = localStorage.getItem("primaryNotes") || "false";
-  //   const secondaryNotes = localStorage.getItem("secondaryNotes") || "false";
-  //   const parsedPrimaryNotes = JSON.parse(primaryNotes) as
-  //     | [string, string][]
-  //     | { id: string; content: [string, string] }[]
-  //     | false;
-  //   if (parsedPrimaryNotes) {
-  //     setPrimaryNotes(
-  //       parsedPrimaryNotes.map((note) => {
-  //         const content = "content" in note ? note.content : note;
-  //         const id = "id" in note ? note.id : genRandomId();
-  //         return { id, content };
-  //       })
-  //     );
-  //   }
-  //   const parsedSecondaryNotes = JSON.parse(secondaryNotes) as
-  //     | [string, string][]
-  //     | { id: string; content: [string, string] }[]
-  //     | false;
-  //   if (parsedSecondaryNotes) {
-  //     setSecondaryNotes(
-  //       parsedSecondaryNotes.map((note) => {
-  //         const content = "content" in note ? note.content : note;
-  //         const id = "id" in note ? note.id : genRandomId();
-  //         return { id, content };
-  //       })
-  //     );
-  //   }
+    // get notes data
+    const primaryNotes =
+      (await AsyncStorage.getItem("primaryNotes")) || "false";
+    const secondaryNotes =
+      (await AsyncStorage.getItem("secondaryNotes")) || "false";
+    const parsedPrimaryNotes = JSON.parse(primaryNotes) as
+      | [string, string][]
+      | { id: string; content: [string, string] }[]
+      | false;
+    if (parsedPrimaryNotes) {
+      setPrimaryNotes(
+        parsedPrimaryNotes.map((note) => {
+          const content = "content" in note ? note.content : note;
+          const id = "id" in note ? note.id : genRandomId();
+          return { id, content };
+        })
+      );
+    }
+    const parsedSecondaryNotes = JSON.parse(secondaryNotes) as
+      | [string, string][]
+      | { id: string; content: [string, string] }[]
+      | false;
+    if (parsedSecondaryNotes) {
+      setSecondaryNotes(
+        parsedSecondaryNotes.map((note) => {
+          const content = "content" in note ? note.content : note;
+          const id = "id" in note ? note.id : genRandomId();
+          return { id, content };
+        })
+      );
+    }
 
-  //   // get stabilizers data
-  //   const storedStabilizers =
-  //     localStorage.getItem("addingStabilizers") || "false";
-  //   const parsedStabilizers = JSON.parse(storedStabilizers) as
-  //     | { adding: boolean; pH: boolean; phReading: string }
-  //     | false;
-  //   if (parsedStabilizers) {
-  //     setAddingStabilizers(parsedStabilizers.adding);
-  //     setTakingPh(parsedStabilizers.pH);
-  //     setPhReading(parsedStabilizers.phReading);
-  //   }
-  //   const storedName = localStorage.getItem("recipeName");
-  //   if (storedName) {
-  //     setRecipeName(storedName);
-  //   }
-  // };
+    // get stabilizers data
+    const storedStabilizers =
+      (await AsyncStorage.getItem("addingStabilizers")) || "false";
+    const parsedStabilizers = JSON.parse(storedStabilizers) as
+      | { adding: boolean; pH: boolean; phReading: string }
+      | false;
+    if (parsedStabilizers) {
+      setAddingStabilizers(parsedStabilizers.adding);
+      setTakingPh(parsedStabilizers.pH);
+      setPhReading(parsedStabilizers.phReading);
+    }
+    const storedName = await AsyncStorage.getItem("recipeName");
+    if (storedName) {
+      setRecipeName(storedName);
+    }
+  };
 
   function calculateHoneyAndWater(
     desiredOG: number,
@@ -653,11 +656,14 @@ export default function RecipeProvider({
     fetchIngredients();
     fetchAdditives();
 
-    // retrieveStoredData();
-    // const units = localStorage.getItem("units");
-    // if (units) {
-    //   setPreferredUnits(units);
-    // }
+    retrieveStoredData();
+
+    (async () => {
+      const units = await AsyncStorage.getItem("units");
+      if (units) {
+        setPreferredUnits(units);
+      }
+    })();
 
     setFirstMount(false);
   }, []);
@@ -866,28 +872,28 @@ export default function RecipeProvider({
     }
   }, [preferredUnits]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("recipeData", JSON.stringify(recipeData));
-  //   localStorage.setItem("primaryNotes", JSON.stringify(primaryNotes));
-  //   localStorage.setItem("secondaryNotes", JSON.stringify(secondaryNotes));
-  //   localStorage.setItem("recipeName", recipeName);
-  //   localStorage.setItem(
-  //     "addingStabilizers",
-  //     JSON.stringify({
-  //       adding: addingStabilizers,
-  //       pH: takingPh,
-  //       phReading,
-  //     })
-  //   );
-  // }, [
-  //   recipeData,
-  //   primaryNotes,
-  //   secondaryNotes,
-  //   addingStabilizers,
-  //   takingPh,
-  //   phReading,
-  //   recipeName,
-  // ]);
+  useEffect(() => {
+    AsyncStorage.setItem("recipeData", JSON.stringify(recipeData));
+    AsyncStorage.setItem("primaryNotes", JSON.stringify(primaryNotes));
+    AsyncStorage.setItem("secondaryNotes", JSON.stringify(secondaryNotes));
+    AsyncStorage.setItem("recipeName", recipeName);
+    AsyncStorage.setItem(
+      "addingStabilizers",
+      JSON.stringify({
+        adding: addingStabilizers,
+        pH: takingPh,
+        phReading,
+      })
+    );
+  }, [
+    recipeData,
+    primaryNotes,
+    secondaryNotes,
+    addingStabilizers,
+    takingPh,
+    phReading,
+    recipeName,
+  ]);
 
   return (
     <RecipeContext.Provider

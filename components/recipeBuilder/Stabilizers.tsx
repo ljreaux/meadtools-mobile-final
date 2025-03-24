@@ -61,7 +61,7 @@ function StabilizersCard({ useRecipe }: { useRecipe: () => Recipe }) {
             )}
           </View>
           <Text className="pt-6">{t("results")} </Text>
-          <View className="py-4 border-b border-dashed">
+          <View className="py-4 border-b">
             <Text>{t("kSorbate")}</Text>
             {sorbate > 0 ? (
               <InputWithUnits value={sorbate.toFixed(3)} disabled text="g" />

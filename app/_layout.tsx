@@ -87,17 +87,9 @@ export default function RootLayout() {
         {/* Main navigation stack */}
         <Stack>
           <Stack.Screen
-            name="index"
+            name="(tabs)"
             options={{
-              title: t("recipeBuilder.homeHeading"),
-              headerTitleStyle: {
-                fontFamily: "UbuntuMono_400Regular",
-              },
-              headerRight: () => (
-                <View className="flex-row items-center">
-                  <ThemeToggle />
-                </View>
-              ),
+              headerShown: false,
             }}
           />
         </Stack>

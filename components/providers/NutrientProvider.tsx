@@ -21,6 +21,7 @@ import {
   useEffect,
 } from "react";
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const NutrientContext = createContext<NutrientType | undefined>(undefined);
 
@@ -309,37 +310,40 @@ export const NutrientProvider = ({
       }
     };
 
-    // const getStoredData = () => {
-    //   const storedData = localStorage.getItem("nutrientData") || "false";
-    //   const parsedData = JSON.parse(storedData);
-    //   if (parsedData) {
-    //     setFullData(parsedData);
-    //     if (parsedData?.outputs?.goFerm) {
-    //       setGoFerm(parsedData.outputs.goFerm);
-    //     }
-    //   }
+    const getStoredData = async () => {
+      const storedData =
+        (await AsyncStorage.getItem("nutrientData")) || "false";
+      const parsedData = JSON.parse(storedData);
+      if (parsedData) {
+        setFullData(parsedData);
+        if (parsedData?.outputs?.goFerm) {
+          setGoFerm(parsedData.outputs.goFerm);
+        }
+      }
 
-    //   const storedYan = localStorage.getItem("yanContribution") || "false";
-    //   const parsedYan = JSON.parse(storedYan) as number[] | false;
-    //   if (parsedYan) {
-    //     setYanContributions(parsedYan.map(String));
-    //   }
+      const storedYan =
+        (await AsyncStorage.getItem("yanContribution")) || "false";
+      const parsedYan = JSON.parse(storedYan) as number[] | false;
+      if (parsedYan) {
+        setYanContributions(parsedYan.map(String));
+      }
 
-    //   const storedOtherName = localStorage.getItem("otherNutrientName");
-    //   if (storedOtherName) {
-    //     setOtherNutrientName(storedOtherName);
-    //   }
+      const storedOtherName = await AsyncStorage.getItem("otherNutrientName");
+      if (storedOtherName) {
+        setOtherNutrientName(storedOtherName);
+      }
 
-    //   const storedSelectedGpl = localStorage.getItem("selectedGpl") || "false";
-    //   const parsedSelectedGpl = JSON.parse(storedSelectedGpl) as
-    //     | string[]
-    //     | false;
-    //   if (parsedSelectedGpl) {
-    //     setSelectedGpl(parsedSelectedGpl);
-    //   }
-    // };
+      const storedSelectedGpl =
+        (await AsyncStorage.getItem("selectedGpl")) || "false";
+      const parsedSelectedGpl = JSON.parse(storedSelectedGpl) as
+        | string[]
+        | false;
+      if (parsedSelectedGpl) {
+        setSelectedGpl(parsedSelectedGpl);
+      }
+    };
 
-    // if (storeData) getStoredData();
+    if (storeData) getStoredData();
     fetchYeasts();
   }, []);
 
@@ -591,24 +595,24 @@ export const NutrientProvider = ({
       }));
   }, [recipeData]);
 
-  // useEffect(() => {
-  //   if (storeData)
-  //     localStorage.setItem("nutrientData", JSON.stringify(fullData));
-  // }, [fullData]);
+  useEffect(() => {
+    if (storeData)
+      AsyncStorage.setItem("nutrientData", JSON.stringify(fullData));
+  }, [fullData]);
 
-  // useEffect(() => {
-  //   if (storeData) {
-  //     localStorage.setItem(
-  //       "yanContribution",
-  //       JSON.stringify(yanContributions.map(parseNumber))
-  //     );
-  //     localStorage.setItem("selectedGpl", JSON.stringify(selectedGpl));
-  //   }
-  // }, [yanContributions, selectedGpl]);
+  useEffect(() => {
+    if (storeData) {
+      AsyncStorage.setItem(
+        "yanContribution",
+        JSON.stringify(yanContributions.map(parseNumber))
+      );
+      AsyncStorage.setItem("selectedGpl", JSON.stringify(selectedGpl));
+    }
+  }, [yanContributions, selectedGpl]);
 
-  // useEffect(() => {
-  //   if (storeData) localStorage.setItem("otherNutrientName", otherNutrientName);
-  // }, [otherNutrientName]);
+  useEffect(() => {
+    if (storeData) AsyncStorage.setItem("otherNutrientName", otherNutrientName);
+  }, [otherNutrientName]);
 
   // Expose only the necessary state to the UI
   const uiState = {
